@@ -20,9 +20,10 @@ jobs:
       - name: run semantic release
         id: new_release
         run: |
+          nextRelease="`npx semantic-release --dryRun | grep -oP 'Published release \K.*? '`"
           npx semantic-release
-          echo "${nextRelease.version}"
-          echo '::set-output name=tag::"${nextRelease.version}"'
+          echo "$nextRelease"
+          echo '::set-output name=tag::"$nextRelease"'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
