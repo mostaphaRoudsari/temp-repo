@@ -22,7 +22,6 @@ jobs:
         run: |
           nextRelease="`npx semantic-release --dryRun | grep -oP 'Published release \K.*? '`"
           npx semantic-release
-          echo "$nextRelease"
           echo "::set-output name=tag::$nextRelease"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +29,7 @@ jobs:
       tag: ${{ steps.new_release.outputs.tag }}
 
   docs:
-    name: Echo version
+    name: Echo Version
     runs-on: ubuntu-latest
     needs: deploy
     steps:
