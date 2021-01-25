@@ -21,7 +21,7 @@ jobs:
         id: new_release
         run: |
           npx semantic-release
-          echo ${nextRelease.version}
+          echo "${nextRelease.version}"
           echo '::set-output name=tag::"${nextRelease.version}"'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
