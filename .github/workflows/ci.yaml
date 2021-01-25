@@ -20,7 +20,7 @@ jobs:
       - name: run semantic release
         id: new_release
         run: |
-          nextRelease="`npx semantic-release --dryRun | grep -oP 'Published release \K.*?' | cat`"
+          nextRelease="`npx semantic-release --dryRun | { grep -oP 'Published release \K.*? ' || true }`"
           npx semantic-release
           echo "::set-output name=tag::$nextRelease"
         env:
