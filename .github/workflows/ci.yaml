@@ -1,0 +1,35 @@
+---
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+
+  deploy:
+    name: test-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up node  # we need node for for semantic release
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14.2.0
+      - name: install semantic-release
+        run:
+          npm install @semantic-release/exec
+      - name: run semantic release
+        id: new_release
+        run: |
+          npx semantic-release
+          echo "::set-output name=tag::${nextRelease.version}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      tag: ${{ steps.new_release.outputs.tag }}
+
+  docs:
+    name: Echo version
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - run: echo ${{needs.deploy.outputs.tag}}
